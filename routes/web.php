@@ -36,5 +36,19 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 
+    /*
+    | Products — frontend only for now.
+    |
+    | These are plain view routes with hard-coded rows in the Blade files.
+    | Swap the group for a controller once the model exists:
+    |   Route::resource('products', ProductController::class);
+    */
+    Route::view('products', 'products.index')->name('products.index');
+    Route::view('products/create', 'products.create')->name('products.create');
+
+    // Placeholder target for the add form, so submitting it doesn't 405.
+    Route::post('products', fn () => back()->with('status', 'Form submitted — no controller wired up yet.'))
+        ->name('products.store');
+
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
